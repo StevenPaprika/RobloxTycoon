@@ -1,4 +1,6 @@
--- Collector Script
+-- Collector — сборщик монеток
+-- Что делает: когда монетка касается коллектора, зачисляет деньги игроку и удаляет монетку
+
 local collector = script.Parent
 local tycoon = collector.Parent
 local ownerValue = tycoon:FindFirstChild("Owner")
@@ -9,6 +11,7 @@ local function onTouch(hit)
 		return
 	end
 
+	-- Ищем у монетки значение CashValue (сколько денег она даёт)
 	local cashValue = parentModel:FindFirstChild("CashValue")
 
 	if cashValue then
@@ -18,8 +21,8 @@ local function onTouch(hit)
 			local cash = leaderstats and leaderstats:FindFirstChild("Cash")
 
 			if cash then
-				cash.Value = cash.Value + cashValue.Value
-				parentModel:Destroy()
+				cash.Value = cash.Value + cashValue.Value  -- зачисляем деньги
+				parentModel:Destroy()  -- удаляем монетку
 			end
 		end
 	end
