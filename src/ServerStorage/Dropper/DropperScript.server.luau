@@ -1,7 +1,9 @@
 -- DropperScript
 local dropper = script.Parent
 local dropPartSpawnPoint = dropper:FindFirstChild("Сопло")
-local moneyPartTemplate = game.ServerStorage:FindFirstChild("MoneyCoin")
+local ServerStorage = game:GetService("ServerStorage")
+local moneyPartTemplate = ServerStorage:FindFirstChild("MoneyCoin")
+local Debris = game:GetService("Debris")
 local tycoon = dropper:FindFirstAncestorOfClass("Model")
 local incomeChangedEvent = Instance.new("BindableEvent", script)
 incomeChangedEvent.Name = "IncomeChanged"
@@ -18,7 +20,7 @@ end
 updateIncome()
 incomeChangedEvent.Event:Connect(updateIncome)
 
-while task.wait(0.001) do
+while task.wait(1) do
 	local newMoneyPart = moneyPartTemplate:Clone()
 	newMoneyPart:SetPrimaryPartCFrame(dropPartSpawnPoint.CFrame)
 	newMoneyPart.Parent = game.Workspace
@@ -30,5 +32,5 @@ while task.wait(0.001) do
 	local cashValue = Instance.new("IntValue", newMoneyPart)
 	cashValue.Name = "CashValue"
 	cashValue.Value = currentIncome
-	game.Debris:AddItem(newMoneyPart, 30)
+	Debris:AddItem(newMoneyPart, 30)
 end

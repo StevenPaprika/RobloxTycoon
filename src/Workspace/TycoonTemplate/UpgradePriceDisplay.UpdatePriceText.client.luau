@@ -1,15 +1,22 @@
--- UpdatePriceText for Upgrade Button
-local billboardGui = script.Parent
-local tycoon = billboardGui.Parent.Parent
+local surfaceGui = script.Parent
+local tycoon = surfaceGui.Parent.Parent
 
-local buttonToCheck = tycoon:FindFirstChild("UpgradeIncomeButton")
-local textLabel = billboardGui:FindFirstChild("SignFrame2"):FindFirstChild("PriceLabel2")
+local upgradeButton = tycoon:FindFirstChild("UpgradeIncomeButton")
+local priceValue = upgradeButton and upgradeButton:FindFirstChild("Price")
+local incomeMultiplier = tycoon:FindFirstChild("IncomeMultiplier")
+local textLabel = surfaceGui:FindFirstChild("SignFrame"):FindFirstChild("PriceLabel")
 
-if buttonToCheck and textLabel then
-	local priceValue = buttonToCheck:FindFirstChild("Price")
-	if priceValue then
-		textLabel.Text = "$ " .. priceValue.Value
-	end
+local function updateDisplay()
+	if not priceValue or not textLabel then return end
+	local mult = incomeMultiplier and incomeMultiplier.Value or 1
+	textLabel.Text = string.format("UPGRADE  $%d\nINCOME   +$%d", priceValue.Value, mult)
 end
 
-script:Destroy()
+if priceValue then
+	priceValue.Changed:Connect(updateDisplay)
+end
+if incomeMultiplier then
+	incomeMultiplier.Changed:Connect(updateDisplay)
+end
+
+updateDisplay()
